@@ -2,6 +2,9 @@ package gateway
 
 import (
 	"bytes"
+	"encoding/json"
+	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -11,7 +14,7 @@ type gatewayOpts struct {
 }
 
 // Invoke gateway with message
-func Invoke(opts *gatewayOpts) (map[string][]string, error) {
+func Invoke(opts *gatewayOpts) (map[string]interface{}, error) {
 	// initialize endpoint
 	endpoint := "https://api.pizza.com/request/create"
 
@@ -30,10 +33,16 @@ func Invoke(opts *gatewayOpts) (map[string][]string, error) {
 	// initiate request for response
 	response, err := client.Do(request)
 
+	body, readErr := ioutil.ReadAll(response.Body)
+	if readErr != nil {
+		log.Fatal(readErr)
+	}
+
 	// code here to error handle
 
 	// code here to read body of response and return it, and convert response json to map
-	responseMap := make(map[string][]string)
+	responseMap := make(map[string]interface{})
+	json.Unmarshal(body, &responseMap)
 
 	defer response.Body.Close()
 
