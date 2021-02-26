@@ -9,14 +9,15 @@ import (
 )
 
 type gatewayOpts struct {
-	body   []byte
-	method string
+	body     []byte
+	method   string
+	endpoint string
 }
 
 // Invoke gateway with message
-func Invoke(opts *gatewayOpts) (map[string]interface{}, error) {
+func Create(opts *gatewayOpts) (map[string]interface{}, error) {
 	// initialize endpoint
-	endpoint := "https://api.pizza.com/request/create"
+	endpoint := opts.endpoint
 
 	// initialize http client
 	client := &http.Client{}
@@ -27,6 +28,8 @@ func Invoke(opts *gatewayOpts) (map[string]interface{}, error) {
 
 	// body always request body or nil for reads
 	request, err := http.NewRequest(opts.method, endpoint, bodyBuffer)
+	request.Header.Set("X-Custom-Header", "myvalue")
+	request.Header.Set("Content-Type", "application/json")
 
 	// code here to error handle
 
