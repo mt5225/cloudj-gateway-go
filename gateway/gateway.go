@@ -10,25 +10,25 @@ import (
 
 // Opts data struct
 type Opts struct {
-	body     []byte
-	method   string
-	endpoint string
+	Body     []byte
+	Method   string
+	Endpoint string
 }
 
 // Create resource via gateway
 func Create(opts *Opts) (map[string]interface{}, error) {
 	// initialize endpoint
-	endpoint := opts.endpoint
+	endpoint := opts.Endpoint
 
 	// initialize http client
 	client := &http.Client{}
 
 	// body into bytes.Buffer pointer
 	var bodyBuffer *bytes.Buffer
-	bodyBuffer = bytes.NewBuffer(opts.body)
+	bodyBuffer = bytes.NewBuffer(opts.Body)
 
 	// body always request body or nil for reads
-	request, err := http.NewRequest(opts.method, endpoint, bodyBuffer)
+	request, err := http.NewRequest(opts.Method, endpoint, bodyBuffer)
 	request.Header.Set("X-Custom-Header", "myvalue")
 	request.Header.Set("Content-Type", "application/json")
 
