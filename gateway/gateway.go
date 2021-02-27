@@ -8,15 +8,15 @@ import (
 	"net/http"
 )
 
-// GatewayOpts data struct
-type GatewayOpts struct {
+// Opts data struct
+type Opts struct {
 	body     []byte
 	method   string
 	endpoint string
 }
 
 // Create resource via gateway
-func Create(opts *GatewayOpts) (map[string]interface{}, error) {
+func Create(opts *Opts) (map[string]interface{}, error) {
 	// initialize endpoint
 	endpoint := opts.endpoint
 
