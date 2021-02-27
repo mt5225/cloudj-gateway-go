@@ -14,7 +14,7 @@ type gatewayOpts struct {
 	endpoint string
 }
 
-// Invoke gateway with message
+// Create resource via gateway
 func Create(opts *gatewayOpts) (map[string]interface{}, error) {
 	// initialize endpoint
 	endpoint := opts.endpoint
