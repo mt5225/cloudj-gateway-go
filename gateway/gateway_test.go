@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-type Box struct {
+type Msg struct {
 	Width  int
 	Height int
 	Color  string
@@ -13,17 +13,17 @@ type Box struct {
 }
 
 func TestFlask01(t *testing.T) {
-	box := Box{
+	msg := Msg{
 		Width:  10,
 		Height: 20,
 		Color:  "blue",
 		Open:   false,
 	}
-	b, _ := json.Marshal(box)
-	opts := &gatewayOpts{
-		body:     b,
-		method:   "POST",
-		endpoint: "http://localhost:5000/dummy",
+	b, _ := json.Marshal(msg)
+	opts := &Opts{
+		Body:     b,
+		Method:   "POST",
+		Endpoint: "http://localhost:5000",
 	}
 	_, err := Create(opts)
 	if err != nil {

@@ -29,7 +29,6 @@ func Create(opts *Opts) (map[string]interface{}, error) {
 
 	// body always request body or nil for reads
 	request, err := http.NewRequest(opts.Method, endpoint, bodyBuffer)
-	request.Header.Set("X-Custom-Header", "myvalue")
 	request.Header.Set("Content-Type", "application/json")
 
 	// code here to error handle
