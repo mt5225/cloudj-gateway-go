@@ -20,6 +20,7 @@ type Opts struct {
 type ResponseMap struct {
 	ServerID string
 	HostName string
+	Success  bool
 }
 
 // Create resource via gateway
@@ -57,6 +58,7 @@ func Create(opts *Opts) (*ResponseMap, error) {
 func fusioncloudGetServerID(msg []byte) *ResponseMap {
 	json := string(msg)
 	resp := new(ResponseMap)
+	resp.Success = gjson.Get(json, "isSuccess").Bool()
 	resp.ServerID = gjson.Get(json, "resultObject.resultMap.servers.0.tenant_id").String()
 	resp.HostName = gjson.Get(json, "resultObject.resultMap.servers.0.metadata.hostname").String()
 	return resp
