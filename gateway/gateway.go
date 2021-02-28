@@ -2,10 +2,11 @@ package gateway
 
 import (
 	"bytes"
-	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/tidwall/gjson"
 )
 
 // Opts data struct
@@ -15,8 +16,14 @@ type Opts struct {
 	Endpoint string
 }
 
+// ResponseMap from api gateway
+type ResponseMap struct {
+	ServerID string
+	HostName string
+}
+
 // Create resource via gateway
-func Create(opts *Opts) (map[string]interface{}, error) {
+func Create(opts *Opts) (*ResponseMap, error) {
 	// initialize endpoint
 	endpoint := opts.Endpoint
 
@@ -42,12 +49,15 @@ func Create(opts *Opts) (map[string]interface{}, error) {
 	}
 
 	// code here to error handle
-
-	// code here to read body of response and return it, and convert response json to map
-	responseMap := make(map[string]interface{})
-	json.Unmarshal(body, &responseMap)
-
 	defer response.Body.Close()
 
-	return responseMap, err
+	return fusioncloudGetServerID(body), err
+}
+
+func fusioncloudGetServerID(msg []byte) *ResponseMap {
+	json := string(msg)
+	resp := new(ResponseMap)
+	resp.ServerID = gjson.Get(json, "resultObject.resultMap.servers.0.tenant_id").String()
+	resp.HostName = gjson.Get(json, "resultObject.resultMap.servers.0.metadata.hostname").String()
+	return resp
 }

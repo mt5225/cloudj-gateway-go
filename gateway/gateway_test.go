@@ -25,8 +25,12 @@ func TestFlask01(t *testing.T) {
 		Method:   "POST",
 		Endpoint: "http://localhost:5000",
 	}
-	_, err := Create(opts)
+	resp, err := Create(opts)
 	if err != nil {
 		t.Error("test flask dummy failed")
+	}
+
+	if resp.HostName != "10-225-135-226" {
+		t.Error(resp)
 	}
 }
